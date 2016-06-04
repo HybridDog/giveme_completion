@@ -1,4 +1,5 @@
-local load_time_start = os.clock()
+local load_time_start = minetest.get_us_time()
+
 
 local player_items = {}
 local function find_item(name, pname)
@@ -103,17 +104,20 @@ function minetest.chatcommands.giveme.func(name, param)
 		local cnt = #items
 		local txt = "More items found:\n"
 		for i = 1,cnt-1 do
-			txt = txt..i..": "..items[i]..", \t"
+			--txt = txt..i..": "..items[i]..", \t"
+			txt = txt..minetest.colorize("#fe55ff", i)..": "..items[i]..", \t"
 		end
-		txt = txt..cnt..": "..items[cnt]
+		--txt = txt..cnt..": "..items[cnt]
+		txt = txt..minetest.colorize("#fe55ff", cnt)..": "..items[cnt]
 		return false, txt
 	end
 	return oldfunc(name, items..rest)
 end
 
-local time = math.floor(tonumber(os.clock()-load_time_start)*100+0.5)/100
-local msg = "[giveme_completion] loaded after ca. "..time
-if time > 0.05 then
+
+local time = (minetest.get_us_time() - load_time_start) / 1000000
+local msg = "[giveme_completion] loaded after ca. " .. time .. " seconds."
+if time > 0.01 then
 	print(msg)
 else
 	minetest.log("info", msg)
