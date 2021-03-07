@@ -47,29 +47,29 @@ local function find_item(name, pname)
 	-- collect information about them and put it to priority
 	local maxwant = 0
 	local data = {}
-	for _,name in pairs(possible_names) do
+	for _,item_name in pairs(possible_names) do
 		local want = 0
-		if minetest.get_item_group(name, "not_in_creative_inventory") == 0
-		and minetest.registered_items[name].description then
+		if minetest.get_item_group(item_name, "not_in_creative_inventory") == 0
+		and minetest.registered_items[item_name].description then
 			want = want+4
 		end
-		if minetest.registered_nodes[name] then
+		if minetest.registered_nodes[item_name] then
 			want = want+2
-			if string.sub(name, 1,7) ~= "stairs:" then
+			if string.sub(item_name, 1,7) ~= "stairs:" then
 				want = want+1
 			end
 		end
 		maxwant = math.max(maxwant, want)
 		if want == maxwant then
-			data[name] = want
+			data[item_name] = want
 		end
 	end
 
 	-- collect possible ones
 	possible_names,n = {},1
-	for name,want in pairs(data) do
+	for item_name,want in pairs(data) do
 		if want == maxwant then
-			possible_names[n] = name
+			possible_names[n] = item_name
 			n = n+1
 		end
 	end
